@@ -1,0 +1,17 @@
+### Test Health Check
+GET http://localhost:5000/api/health
+
+### Test Sponsorship Analysis
+POST http://localhost:5000/api/sponsorship/analyze
+Content-Type: application/json
+
+{
+  "programData": {
+    "name": "Tech Education Summit 2026",
+    "type": "Event",
+    "description": "An annual summit that connects educators, students, and industry leaders to discuss innovation in technology education.",
+    "goals": "Provide mentorship, networking opportunities, and career readiness support for future tech professionals.",
+    "targetAudience": "Students, educators, and early-career professionals"
+  },
+  "websiteUrl": "https://www.google.com"
+}

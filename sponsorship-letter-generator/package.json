@@ -1,0 +1,19 @@
+{
+  "name": "sponsorship-letter-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack Sponsorship Letter Generator monorepo",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "start": "npm run start --workspace backend",
+    "lint": "npm run lint --workspace backend && npm run lint --workspace frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

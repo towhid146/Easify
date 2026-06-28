@@ -4,3 +4,5 @@ work/
 # OS/editor files
 .DS_Store
 Thumbs.db
+
+.vercel
