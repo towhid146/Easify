@@ -1,9 +1,9 @@
-# Sponsorship Letter Generator
+# Easify
 
 A full-stack web application that:
 
 1. Extracts public company website content
-2. Uses Claude to build a structured company profile
+2. Uses OpenAI to build a structured company profile
 3. Runs overlap analysis between a program and company
 4. Generates a customized sponsorship letter
 5. Displays token usage and estimated cost
@@ -12,7 +12,7 @@ A full-stack web application that:
 
 - Frontend: React + TypeScript + Vite + Tailwind CSS
 - Backend: Node.js + Express + TypeScript
-- AI: Anthropic Claude API
+- AI: OpenAI API
 - Website Parsing: Axios + Cheerio
 
 ## Project Structure
@@ -37,7 +37,7 @@ sponsorship-letter-generator/
 2. Configure environment files:
    - Copy `backend/.env.example` to `backend/.env`
    - Copy `frontend/.env.example` to `frontend/.env`
-3. Set your `ANTHROPIC_API_KEY` in `backend/.env`
+3. Set your `OPENAI_API_KEY` in `backend/.env`
 4. Start both apps:
    ```bash
    npm run dev

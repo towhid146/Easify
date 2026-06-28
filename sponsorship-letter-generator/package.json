@@ -1,8 +1,8 @@
 {
-  "name": "sponsorship-letter-generator",
+  "name": "easify",
   "version": "1.0.0",
   "private": true,
-  "description": "Full-stack Sponsorship Letter Generator monorepo",
+  "description": "Easify full-stack sponsorship intelligence platform",
   "workspaces": [
     "frontend",
     "backend"

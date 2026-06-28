@@ -148,12 +148,12 @@ export interface ErrorResponse {
   details?: unknown;
 }
 
-export interface ClaudeMessage {
+export interface OpenAIMessage {
   role: "user" | "assistant";
   content: string;
 }
 
-export interface ClaudeResponse {
+export interface OpenAIResponse {
   id: string;
   type: string;
   role: "assistant";

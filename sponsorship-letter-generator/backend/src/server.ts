@@ -5,8 +5,8 @@ dotenv.config();
 
 const PORT = Number(process.env.PORT || 5000);
 
-if (!process.env.ANTHROPIC_API_KEY) {
-  console.warn("Warning: ANTHROPIC_API_KEY is missing. Analysis endpoints will fail.");
+if (!process.env.OPENAI_API_KEY) {
+  console.warn("Warning: OPENAI_API_KEY is missing. Analysis endpoints will fail.");
 }
 
 if (!process.env.FRONTEND_URL) {

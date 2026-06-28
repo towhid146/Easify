@@ -10,7 +10,7 @@ Build and maintain a reliable Sponsorship Letter Generator MVP with clean bounda
 - Validate all incoming API payloads.
 - Never send raw HTML from websites directly to AI; always preprocess first.
 - Return predictable JSON responses for success and failure cases.
-- Track token usage for every Claude call and show total usage to users.
+- Track token usage for every AI call and show total usage to users.
 
 ## Quality Checklist
 

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateSponsorshipRequest } from "../middleware/validation";
 import websiteExtractor from "../services/websiteExtractor";
-import claudeAnalyzer from "../services/claudeAnalyzer";
+import openaiAnalyzer from "../services/openaiAnalyzer";
 import letterGenerator from "../services/letterGenerator";
 import { ApiResponse, AnalysisResponse, ProgramData } from "../types";
 
@@ -19,8 +19,8 @@ router.post("/analyze", validateSponsorshipRequest, async (req, res) => {
   };
 
   const extracted = await websiteExtractor.extractWebsiteContent(websiteUrl);
-  const companyAnalysisResult = await claudeAnalyzer.analyzeCompanyProfile(extracted);
-  const overlapAnalysisResult = await claudeAnalyzer.analyzeOverlap(
+  const companyAnalysisResult = await openaiAnalyzer.analyzeCompanyProfile(extracted);
+  const overlapAnalysisResult = await openaiAnalyzer.analyzeOverlap(
     programData,
     companyAnalysisResult.data
   );

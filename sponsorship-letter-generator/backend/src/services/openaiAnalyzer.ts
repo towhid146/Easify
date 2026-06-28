@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import {
   AnalysisResult,
   CompanyProfile,
@@ -7,14 +7,14 @@ import {
   ProgramData
 } from "../types";
 
-class ClaudeAnalyzer {
-  private client: Anthropic | null;
+class OpenAIAnalyzer {
+  private client: OpenAI | null;
   private model: string;
 
   constructor() {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    this.client = apiKey ? new Anthropic({ apiKey }) : null;
-    this.model = process.env.CLAUDE_MODEL || "claude-opus-4-6";
+    const apiKey = process.env.OPENAI_API_KEY?.trim();
+    this.client = apiKey ? new OpenAI({ apiKey }) : null;
+    this.model = (process.env.OPENAI_MODEL || "gpt-4o-mini").trim();
   }
 
   async analyzeCompanyProfile(
@@ -57,11 +57,14 @@ Return ONLY this JSON structure:
   "recentProjects": ["string"]
 }`;
 
-    const response = await this.client!.messages.create({
+    const response = await this.client!.chat.completions.create({
       model: this.model,
       max_tokens: 1000,
-      system,
-      messages: [{ role: "user", content: user }]
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user }
+      ]
     });
 
     const text = this.extractText(response);
@@ -162,11 +165,14 @@ Return ONLY this JSON:
   "recommendations": ["string"]
 }`;
 
-    const response = await this.client!.messages.create({
+    const response = await this.client!.chat.completions.create({
       model: this.model,
       max_tokens: 1500,
-      system,
-      messages: [{ role: "user", content: user }]
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user }
+      ]
     });
 
     const text = this.extractText(response);
@@ -226,11 +232,14 @@ Letter Requirements:
 
 Output only valid HTML.`;
 
-    const response = await this.client!.messages.create({
+    const response = await this.client!.chat.completions.create({
       model: this.model,
       max_tokens: 2000,
-      system,
-      messages: [{ role: "user", content: user }]
+      temperature: 0.4,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user }
+      ]
     });
 
     const html = this.extractText(response).trim();
@@ -244,17 +253,16 @@ Output only valid HTML.`;
 
   private ensureClient(): void {
     if (!this.client) {
-      throw new Error("ANTHROPIC_API_KEY is missing. Add it to backend/.env.");
+      throw new Error("OPENAI_API_KEY is missing. Add it to backend/.env.");
     }
   }
 
-  private extractText(response: Anthropic.Messages.Message): string {
-    const blocks = response.content ?? [];
-    const firstText = blocks.find((part) => part.type === "text");
-    if (!firstText || !("text" in firstText)) {
-      throw new Error("Claude returned no text output.");
+  private extractText(response: OpenAI.Chat.Completions.ChatCompletion): string {
+    const text = response.choices[0]?.message?.content;
+    if (!text) {
+      throw new Error("OpenAI returned no text output.");
     }
-    return firstText.text ?? "";
+    return text;
   }
 
   private parseJson<T>(raw: string): T {
@@ -271,7 +279,7 @@ Output only valid HTML.`;
       if (start !== -1 && end !== -1 && end > start) {
         return JSON.parse(cleaned.slice(start, end + 1)) as T;
       }
-      throw new Error("Failed to parse Claude JSON response.");
+      throw new Error("Failed to parse JSON response from OpenAI.");
     }
   }
 
@@ -292,16 +300,17 @@ Output only valid HTML.`;
     }
   }
 
-  private extractTokenUsage(response: Anthropic.Messages.Message): {
+  private extractTokenUsage(response: OpenAI.Chat.Completions.ChatCompletion): {
     input: number;
     output: number;
     total: number;
   } {
-    const input = response.usage?.input_tokens ?? 0;
-    const output = response.usage?.output_tokens ?? 0;
-    return { input, output, total: input + output };
+    const input = response.usage?.prompt_tokens ?? 0;
+    const output = response.usage?.completion_tokens ?? 0;
+    const total = response.usage?.total_tokens ?? input + output;
+    return { input, output, total };
   }
 }
 
-export const claudeAnalyzer = new ClaudeAnalyzer();
-export default claudeAnalyzer;
+export const openaiAnalyzer = new OpenAIAnalyzer();
+export default openaiAnalyzer;

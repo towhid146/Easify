@@ -1,5 +1,5 @@
 import { CompanyProfile, OverlapAnalysis, ProgramData } from "../types";
-import claudeAnalyzer from "./claudeAnalyzer";
+import openaiAnalyzer from "./openaiAnalyzer";
 
 class LetterGeneratorService {
   async generate(
@@ -7,7 +7,7 @@ class LetterGeneratorService {
     companyAnalysis: CompanyProfile,
     overlapAnalysis: OverlapAnalysis
   ) {
-    return claudeAnalyzer.generateLetterHTML(
+    return openaiAnalyzer.generateLetterHTML(
       programData,
       companyAnalysis,
       overlapAnalysis
