@@ -7,10 +7,11 @@ import sponsorshipRouter from "./routes/sponsorship";
 import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
+const frontendUrl = (process.env.FRONTEND_URL || "http://localhost:5173").trim();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: frontendUrl,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
   })
